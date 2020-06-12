@@ -1,11 +1,19 @@
 const obj = {
     DEFAULT_SUCCESS: {
-        code: 10000,
+        code: 200,
         msg: 'success'
     },
     DEFAULT_ERROR: {
         code: 188,
         msg: "系统错误"
+    },
+    DEFAULT_PASSWORD_ERROR: {
+        code: 189,
+        msg: "密码错误！请输入正确密码"
+    },
+    DEFAULT_PASSWORD_EMPTY_ERROR: {
+        code: 190,
+        msg: "密码不能为空，请输入密码"
     },
     LACK: {
         code: 199,

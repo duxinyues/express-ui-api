@@ -7,8 +7,8 @@ const Token = {
      * @param {*} data  加密在token上的数据
      * @param {*} time   Token的过期时间，单位ms
      */
-    encrypt: function (data, time) {
-        return jwt.sign(data, tokenKey, { expiresIn: time })
+    encrypt: function (data) {
+        return jwt.sign(data, tokenKey, { expiresIn: 3600 })
     },
     /**
      *  解密方法
