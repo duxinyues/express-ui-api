@@ -1,3 +1,10 @@
+/*
+ * @Author: yongyuan253015@gmail.com
+ * @Date: 2021-08-08 17:41:35
+ * @LastEditors: 
+ * @LastEditTime: 2021-09-20 11:05:07
+ * @Description: 文件描述
+ */
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -8,7 +15,13 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
-
+app.all('*', (req, res, next) => {
+  // 允许跨域，*表示允许任意域名跨域
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Headers', "content-type");
+  res.header('Access-Control-Allow-Methods', "DELETE,PUT,POST,GET,OPTTONS");
+  next()
+})
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

@@ -1,9 +1,16 @@
+/*
+ * @Author: yongyuan253015@gmail.com
+ * @Date: 2021-08-08 17:41:35
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-20 10:08:25
+ * @Description: 文件描述
+ */
 const Constant = require("../constant/constant");
 const dateFormat = require("dateformat");
-const token = require("../controllers/token");
+const token = require("./token");
 const pool = require("../config");
-const Common = require("../controllers/common");
-function user(req, res) {
+const Common = require("./common");
+function getArticleList(req, res) {
 
     //定义一个返回对象
     const resObj = Common.clone(Constant.DEFAULT_SUCCESS);

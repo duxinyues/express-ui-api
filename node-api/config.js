@@ -1,9 +1,16 @@
+/*
+ * @Author: yongyuan253015@gmail.com
+ * @Date: 2021-08-08 17:41:35
+ * @LastEditors: 
+ * @LastEditTime: 2021-09-19 17:43:17
+ * @Description: 文件描述
+ */
 const mysql = require("mysql");
 const config = {
     MYSQL: {
-        database: 'nodetes',
+        database: 'blog',
         username: 'root',
-        password: '123456',
+        password: '1234567',
         host: 'localhost',
         port: 3306
     },
