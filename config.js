@@ -1,14 +1,14 @@
 /*
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-08-08 17:41:35
- * @LastEditors: 
- * @LastEditTime: 2021-09-19 17:43:17
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-10-25 19:48:33
  * @Description: 文件描述
  */
 const mysql = require("mysql");
 const config = {
     MYSQL: {
-        database: 'blog',
+        database: 'new_blog',
         username: 'root',
         password: '1234567',
         host: 'localhost',
