@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-08-08 17:41:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-10-02 15:26:38
+ * @LastEditTime: 2021-10-25 20:34:58
  * @Description: 文件描述
  */
 var createError = require('http-errors');
@@ -54,4 +54,4 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = app; 
