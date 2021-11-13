@@ -1,0 +1,27 @@
+/*
+ * @Author: yongyuan253015@gmail.com
+ * @Date: 2021-11-14 01:19:44
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-14 02:27:01
+ * @Description: 分类 cate model
+ */
+const Sequelize = require('sequelize');
+const db = require('../db');
+
+const Cate = db.define('Cate', {
+    id: {
+        type: Sequelize.INTEGER, primaryKey: true,
+        allowNull: true,
+        autoIncrement: true,
+    },
+    name: {
+        type: Sequelize.STRING(20),
+        allowNull: false,
+    },
+
+}, {
+    underscored: true,
+    tableName: 'cate',
+});
+
+module.exports = Cate

@@ -1,5 +1,12 @@
+/*
+ * @Author: yongyuan253015@gmail.com
+ * @Date: 2021-10-02 17:07:45
+ * @LastEditors: 
+ * @LastEditTime: 2021-11-14 00:39:13
+ * @Description: 公共方法文件
+ */
 const async = require("async");
-const Constant = require("../constant/constant");
+const Constant = require("../constant/constant"); // 常量模块
 const exportObj = {
     clone,
     checkParams,
