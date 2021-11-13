@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-08-08 17:41:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-10-02 02:50:33
+ * @LastEditTime: 2021-11-14 00:01:32
  * @Description: 文件描述
  */
 const Constant = require("../constant/constant");
@@ -19,7 +19,7 @@ function getArticleList(req, res) {
     //定义一个返回对象
     const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
     //查询
-    const sql = "SELECT * FROM  article_list ";
+    const sql = "SELECT * FROM  article ";
     pool.getConnection(function (err, connection) {
         if (err) {
             res.send(Constant.DEFAULT_ERROR)
@@ -47,23 +47,23 @@ function addArticle(req, res) {
     //定义一个返回对象
     const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
     //查询
-    //  const sql = `INSERT INTO article_list ()VALUES( 4, "lijian", "123456", 18, 1, 0, 0 )`;
-    //  pool.getConnection(function (err, connection) {
-    //      if (err) {
-    //          res.send(Constant.DEFAULT_ERROR)
-    //      } else {
-    //          console.log("mysql链接成功！")
-    //          connection.query(sql, function (err, results) {
-    //              if (err) {
-    //                  res.send(Constant.DEFAULT_ERROR)
-    //              } else {
-    //                  const result = JSON.parse(JSON.stringify(results));
-    //                  resObj.data = result;
-    //                  res.send(resObj)
-    //              }
-    //          })
-    //      }
-    //  })
+     const sql = `INSERT INTO article_list ()VALUES( 4, "lijian", "123456", 18, 1, 0, 0 )`;
+     pool.getConnection(function (err, connection) {
+         if (err) {
+             res.send(Constant.DEFAULT_ERROR)
+         } else {
+             console.log("mysql链接成功！")
+             connection.query(sql, function (err, results) {
+                 if (err) {
+                     res.send(Constant.DEFAULT_ERROR)
+                 } else {
+                     const result = JSON.parse(JSON.stringify(results));
+                     resObj.data = result;
+                     res.send(resObj)
+                 }
+             })
+         }
+     })
 }
 //登录
 function login(req, res) {
