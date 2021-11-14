@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-11-14 03:36:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-15 00:34:09
+ * @LastEditTime: 2021-11-15 00:41:57
  * @Description: 文件描述
  */
 const Common = require('./common');
@@ -149,7 +149,30 @@ let update = (res, req) => {
     }
     Common.autoFn(tasks, res, resObj);
 };
-let remove = (res, req) => { };
+let remove = (res, req) => {
+    const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
+    let tasks = {
+        checkParams: (cb) => { Common.checkParams(req.body, ['id'], cb) },
+        remove: ['checkParams', (results, cb) => {
+            ArticleMOdel
+            .destroy({
+                where: { id: req.body.id}
+            })
+            .then(res =>{
+                if(res){
+                    cb(null);
+                }else{
+                    cb('article not  exsit');
+                }
+            })
+            .catch(err=>{
+                console.log(err);
+                cb(Constant.DEFAULT_ERROR);
+            });
+         }]
+    };
+    Common.autoFn(tasks, res, resObj);
+};
 module.exports = {
     list,
     info,
