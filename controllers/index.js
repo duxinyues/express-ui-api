@@ -1,42 +1,77 @@
 /*
  * @Author: yongyuan253015@gmail.com
- * @Date: 2021-08-08 17:41:35
+ * @Date: 2021-10-02 17:07:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-14 00:52:07
+ * @LastEditTime: 2021-11-14 04:44:07
  * @Description: 文件描述
  */
+const Common = require('./common');
+const AdminModel = require('../models/admin');
 const Constant = require("../constant/constant");
-const dateFormat = require("dateformat");
-const token = require("../controllers/token");
-const pool = require("../config");
-const Common = require("../controllers/common");
-/**
- * 文章列表
- * @param {*} req 
- * @param {*} res 
- */
-function getArticleList(req, res) {
-    //定义一个返回对象
+const dateFormat = require('dateformat');
+const Token = require('./token');
+
+const TOKEN_EXPRESS_SENCOND = 3600; // token有效期
+
+const loginController = (req, res) => {
     const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
-    //查询
-    const sql = "SELECT * FROM  article ";
-    pool.getConnection(function (err, connection) {
-        if (err) {
-            res.send(Constant.DEFAULT_ERROR)
-        } else {
-            console.log("mysql链接成功！")
-            connection.query(sql, function (err, results) {
-                if (err) {
-                    res.send(Constant.DEFAULT_ERROR)
-                } else {
-                    const result = JSON.parse(JSON.stringify(results));
-                    resObj.data = result;
-                    res.send(resObj)
+    let task = {
+        checkParams: (cb) => {
+            Common.checkParams(req.body, ['username', 'password'], cb)
+        },
+        query: ['checkParams', (results, cb) => {
+            AdminModel.findOne({
+                where: {
+                    username: req.body.username,
+                    password: req.body.password
                 }
             })
-        }
-    })
+                .then((result) => {
+                    if (result) {
+                        resObj.data = {
+                            id: result.id,
+                            username: result.username,
+                            name: result.name,
+                            role: result.role,
+                            lastLoginAt: dateFormat(result.lastLoginAt, 'yyyy-mm-dd HH:MM:ss'),
+                            createAt: dateFormat(result.createAt, 'yyyy-mm-dd HH:MM:ss')
+                        }
+                        const adminInfo = {
+                            id: result.id
+                        }
+                        let token = Token.encrypt(adminInfo, TOKEN_EXPRESS_SENCOND);
+                        resObj.data.token = token;
+                        cb(null, result.id)
+                    } else {
+                        // 没有查询到结果
+                        cb(Constant.LOGIN_ERROR)
+                    }
+                })
+                .catch(err => {
+                    cb(Constant.DEFAULT_ERROR);
+                })
+        }],
+        writeLastLoginAt: ['query', (results, cb) => {
+            let adminId = results['query'];
+            AdminModel.update({
+                lastLoginAt: new Date()
+            }, {
+                where: {
+                    id: adminId
+                }
+            })
+                .then((result) => {
+                    if (result) {
+                        cb(null);
+                    } else {
+                        cb(Constant.DEFAULT_ERROR);
+                    }
+                })
+                .catch((err) => {
+                    cb(Constant.DEFAULT_ERROR);
+                });
+        }]
+    }
+    Common.autoFn(task, res, resObj)
 }
-module.exports = {
-    getArticleList,
-}
+module.exports = loginController;

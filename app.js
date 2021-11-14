@@ -2,18 +2,20 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-08-08 17:41:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-10-25 20:34:58
- * @Description: 文件描述
+ * @LastEditTime: 2021-11-14 03:48:50
+ * @Description: app
  */
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var verifyMiddleware = require('./routes/middleware/verify');
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
+var infoRouter = require('./routes/info');
+var cateRouter = require('./routes/cate');
+var adminRouter = require('./routes/admin');
+var atricleRoute = require('./routes/atricle');
 var app = express();
 app.all('*', (req, res, next) => {
   // 允许跨域，*表示允许任意域名跨域
@@ -36,7 +38,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-
+app.use('/cate', verifyMiddleware.verifyToken, cateRouter);
+app.use('/atricle', verifyMiddleware.verifyToken, atricleRoute);
+app.use('/admin', verifyMiddleware.verifyToken, adminRouter);
+app.use('/info', verifyMiddleware.verifyToken, infoRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   console.log(req)
