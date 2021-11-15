@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-11-14 01:20:40
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-14 02:46:20
+ * @LastEditTime: 2021-11-15 22:57:00
  * @Description: 文件描述
  */
 const Sequelize = require('sequelize');
@@ -37,3 +37,5 @@ const Admin = db.define('Admin', {
     underscored: true,
     tableName: 'admin'
 })
+
+module.exports = Admin;

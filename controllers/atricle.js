@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-11-14 03:36:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-15 00:41:57
+ * @LastEditTime: 2021-11-15 00:51:07
  * @Description: 文件描述
  */
 const Common = require('./common');
@@ -10,7 +10,6 @@ const ArticleMOdel = require('../models/article');
 const CateModel = require('../models/cate');
 const Constant = require("../constant/constant");
 const dateFormat = require('dateformat');
-const { where } = require('sequelize/types');
 
 let list = (res, req) => {
     const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
