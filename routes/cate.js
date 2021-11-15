@@ -2,10 +2,10 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-11-14 00:33:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-14 03:12:09
+ * @LastEditTime: 2021-11-15 00:49:43
  * @Description: 分类管理
  */
-import express from "express";
+const express = require('express');
 const router = express.Router();
 
 const CateController = require("../controllers/cate");
