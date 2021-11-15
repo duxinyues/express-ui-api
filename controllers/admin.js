@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-11-14 03:37:01
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-15 23:06:00
+ * @LastEditTime: 2021-11-15 23:15:49
  * @Description: 管理员列表接口
  */
 const Common = require('./common');
@@ -105,8 +105,61 @@ let add = (req, res) => {
     };
     Common.autoFn(tasks, res, resObj);
 };
-let update = (req, res) => { };
-let remove = (req, res) => { };
+let update = (req, res) => {
+    const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
+    let tasks = {
+        checkParams: (cb) => { Common.checkParams(req.body, ['name', 'username', 'password', 'role', 'id'], cb); },
+        query: ['checkParams', (results, cb) => {
+            AdminModel
+                .update({
+                    username: req.body.userName,
+                    password: req.body.password,
+                    name: req.body.name,
+                    role: req.body.role
+                }, {
+                    where: {
+                        id: req.body.id
+                    }
+                })
+                .then((results) => {
+                    if (results[0]) {
+                        cb(null);
+                    } else {
+                        cb("admin not exsit")
+                    }
+                })
+                .catch(err => {
+                    cb(Constant.DEFAULT_ERROR)
+                })
+        }]
+    };
+    Common.autoFn(tasks, res, resObj);
+};
+let remove = (req, res) => {
+    const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
+    let tasks = {
+        checkParams: (cb) => { Common.checkParams(req.body, ['id'], cb); },
+        remove: ['checkParams', (results, cb) => {
+            AdminModel
+                .destroy({
+                    where: {
+                        id: req.body.id
+                    }
+                })
+                .then((results) => {
+                    if (results) {
+                        cb(null);
+                    } else {
+                        cb("admin not exsit")
+                    }
+                })
+                .catch(err => {
+                    cb(Constant.DEFAULT_ERROR)
+                })
+        }]
+    };
+    Common.autoFn(tasks, res, resObj);
+};
 module.exports = {
     list,
     info,
