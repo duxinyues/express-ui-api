@@ -16,8 +16,8 @@ const Article = db.define('Article', {
         allowNull: false,
         autoIncrement: true
     },
-    tileId: {
-        type: Sequelize.STRING(20),
+    title: {
+        type: Sequelize.STRING(30),
         allowNull: false,
     },
     decs: {

@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-11-14 03:06:31
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-14 23:51:20
+ * @LastEditTime: 2021-11-16 23:56:52
  * @Description: cateController
  */
 const Common = require("./common");
@@ -14,24 +14,24 @@ const list = (req, res) => {
     const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
     let tasks = {
         checkParams: (cb) => {
-            if (req.query.dropList) {
+            if (req.body.dropList) {
                 cb(null);
             } else {
-                Common.checkParams(req.query, ['page', 'rows'], cb);
+                Common.checkParams(req.body, ['page', 'rows'], cb);
             }
         },
         query: ['checkParams', (results, cb) => {
             let searchOption;
-            if (req.query.dropList) {
+            if (req.body.dropList) {
                 searchOption = {
                     order: [['create_at', 'DESC']]
                 }
             } else {
-                let offset = req.query.rows * (req.query.page - 1) || 0;
-                let limit = parseInt(req.query.rows) || 20;
+                let offset = req.body.rows * (req.body.page - 1) || 0;
+                let limit = parseInt(req.body.rows) || 20;
                 let whereCondition = {};
-                if (req.query.name) {
-                    whereCondition.name = req.query.name;
+                if (req.body.name) {
+                    whereCondition.name = req.body.name;
                 }
 
                 searchOption = {
@@ -45,6 +45,7 @@ const list = (req, res) => {
             CateModel
                 .findAndCountAll(searchOption)
                 .then((results) => {
+                    console.log("结果", results)
                     let list = [];
                     results.rows.forEach((value, index) => {
                         let object = {
@@ -61,6 +62,7 @@ const list = (req, res) => {
                     cb(null);
                 })
                 .catch((err) => {
+                    console.log("分类列表报错", res)
                     cb(Constant.DEFAULT_ERROR)
                 });
         }]
@@ -97,15 +99,24 @@ const info = (req, res) => {
     Common.autoFn(tasks, res, resObj);
 }
 const add = (req, res) => {
-    const resObj = Common.clone(COnstant.DEFAULT_SUCCESS);
+    const params = {
+        // id: 3,
+        name: req.body.name,
+        // update_at: new Date().getTime(),
+        // create_at: new Date().getTime()
+    };
+    const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
     let tasks = {
         checkParams: (cb) => {
-            Common.checkParams(req.body, ['name'], cb);
+            Common.checkParams(params, ['name'], cb);
         },
         add: ['checkParams', (results, cb) => {
             CateModel
                 .create({
-                    name: req.body.name
+                    // id: 3,
+                    name: req.body.name,
+                    // update_at: new Date().getTime(),
+                    // create_at: new Date().getTime()
                 })
                 .then(result => {
                     console.log('插入分类的处理结果', result);

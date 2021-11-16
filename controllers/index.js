@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-10-02 17:07:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-14 04:44:07
+ * @LastEditTime: 2021-11-16 22:53:54
  * @Description: 文件描述
  */
 const Common = require('./common');
@@ -11,7 +11,7 @@ const Constant = require("../constant/constant");
 const dateFormat = require('dateformat');
 const Token = require('./token');
 
-const TOKEN_EXPRESS_SENCOND = 3600; // token有效期
+const TOKEN_EXPRESS_SENCOND = 360000000; // token有效期
 
 const login = (req, res) => {
     const resObj = Common.clone(Constant.DEFAULT_SUCCESS);

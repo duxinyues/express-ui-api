@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-11-14 01:20:09
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-14 02:40:39
+ * @LastEditTime: 2021-11-16 23:44:56
  * @Description: 文件描述
  */
 const Sequelize = require('sequelize');
@@ -19,9 +19,13 @@ const Info = db.define('Info', {
         allowNull: false
     },
     subtitle: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING(20),
         allowNull: false
     },
+    about:{
+        type:Sequelize.STRING(20),
+        allowNull:false
+    }
 }, {
     underscored: true,
     tableName: 'info'
