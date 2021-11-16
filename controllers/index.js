@@ -13,7 +13,7 @@ const Token = require('./token');
 
 const TOKEN_EXPRESS_SENCOND = 3600; // token有效期
 
-const loginController = (req, res) => {
+const login = (req, res) => {
     const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
     let task = {
         checkParams: (cb) => {
@@ -74,4 +74,6 @@ const loginController = (req, res) => {
     }
     Common.autoFn(task, res, resObj)
 }
-module.exports = loginController;
+module.exports = {
+    login
+};
