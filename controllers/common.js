@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-10-02 17:07:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-16 23:25:08
+ * @LastEditTime: 2021-11-17 23:11:17
  * @Description: 公共方法文件
  */
 const async = require("async");
@@ -27,7 +27,6 @@ function clone(obj) {
  * @param {*} cb   回调
  */
 function checkParams(params, checkArr, cb) {
-    console.log("params",params)
     let flag = true;
     checkArr.forEach(key => {
         if (!params[key]) {
