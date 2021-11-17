@@ -1,3 +1,10 @@
+/*
+ * @Author: yongyuan253015@gmail.com
+ * @Date: 2021-10-02 17:07:45
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-17 23:08:15
+ * @Description: 文件描述
+ */
 const obj = {
     DEFAULT_SUCCESS: {
         code: 200,
@@ -6,6 +13,10 @@ const obj = {
     DEFAULT_ERROR: {
         code: 188,
         msg: "系统错误"
+    },
+    DEFAULT_LOGIN_FAIL:{
+        code:401,
+        msg:'登录失败，用户名或者密码错误'
     },
     DEFAULT_PASSWORD_ERROR: {
         code: 189,
