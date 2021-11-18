@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-08-08 17:41:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-15 23:28:40
+ * @LastEditTime: 2021-11-18 23:35:28
  * @Description: app
  */
 var createError = require('http-errors');
@@ -38,7 +38,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/cate', verifyMiddleware.verifyToken, cateRouter);
+app.use('/cate', cateRouter);
 app.use('/atricle', verifyMiddleware.verifyToken, atricleRoute);
 app.use('/admin', verifyMiddleware.verifyToken, adminRouter);
 app.use('/info', verifyMiddleware.verifyToken, infoRouter);

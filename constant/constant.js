@@ -18,6 +18,10 @@ const obj = {
         code:401,
         msg:'登录失败，用户名或者密码错误'
     },
+    DEFAULT_ADD_CATE_FAIL:{
+        code:401,
+        msg:'添加分类失败！'
+    },
     DEFAULT_PASSWORD_ERROR: {
         code: 189,
         msg: "密码错误！请输入正确密码"
