@@ -2,13 +2,21 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-10-02 17:07:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-19 22:16:54
+ * @LastEditTime: 2021-11-19 22:36:40
  * @Description: 文件描述
  */
 const obj = {
     DEFAULT_SUCCESS: {
         code: 200,
         msg: 'success'
+    },
+    DEFAULT_DELETE_SUCCESS:{
+        code:200,
+        msg:'删除成功！'
+    },
+    DEFAULT_DELETE_FAIL:{
+        code:400,
+        msg:'删除失败！'
     },
     DEFAULT_ERROR: {
         code: 188,
