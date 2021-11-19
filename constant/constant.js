@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-10-02 17:07:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-17 23:08:15
+ * @LastEditTime: 2021-11-19 22:16:54
  * @Description: 文件描述
  */
 const obj = {
@@ -21,6 +21,10 @@ const obj = {
     DEFAULT_ADD_CATE_FAIL:{
         code:401,
         msg:'添加分类失败！'
+    },
+    DEFAULT_CATE_FAIL_REPEAT:{
+        code:402,
+        msg:'分类重复！'
     },
     DEFAULT_PASSWORD_ERROR: {
         code: 189,

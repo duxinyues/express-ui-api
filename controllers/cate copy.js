@@ -2,30 +2,72 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-11-14 03:06:31
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-19 22:18:26
+ * @LastEditTime: 2021-11-16 23:56:52
  * @Description: cateController
  */
-const formatDate = require("../utils")
 const Common = require("./common");
 const CateModel = require("../models/cate");
 const Constant = require("../constant/constant");
 const dateFormat = require('dateformat');
-const pool = require('../config');
 
 const list = (req, res) => {
-    const sql = `SELECT * FROM cate LIMIT ${(req.body.page - 1) * req.body.pageSize},${req.body.pageSize}`
     const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
-    pool.query(sql, (err, result) => {
-        if (err) {
-            res.send(Constant.DEFAULT_LOGIN_FAIL);
-            return;
-        }
+    let tasks = {
+        checkParams: (cb) => {
+            if (req.body.dropList) {
+                cb(null);
+            } else {
+                Common.checkParams(req.body, ['page', 'rows'], cb);
+            }
+        },
+        query: ['checkParams', (results, cb) => {
+            let searchOption;
+            if (req.body.dropList) {
+                searchOption = {
+                    order: [['create_at', 'DESC']]
+                }
+            } else {
+                let offset = req.body.rows * (req.body.page - 1) || 0;
+                let limit = parseInt(req.body.rows) || 20;
+                let whereCondition = {};
+                if (req.body.name) {
+                    whereCondition.name = req.body.name;
+                }
 
-        if (result) {
-            resObj.data = result
-            res.send(resObj);
-        }
-    })
+                searchOption = {
+                    where: whereCondition,
+                    offset: offset,
+                    limit: limit,
+                    order: [['create_at', 'DESC']]
+                }
+            }
+
+            CateModel
+                .findAndCountAll(searchOption)
+                .then((results) => {
+                    console.log("结果", results)
+                    let list = [];
+                    results.rows.forEach((value, index) => {
+                        let object = {
+                            id: value.id,
+                            name: value.name,
+                            createdAt: dateFormat(value.createdAt, 'yyyy-mm-dd HH:MM:ss')
+                        }
+                        list.push(object)
+                    });
+                    resObj.data = {
+                        list,
+                        count: results.count
+                    };
+                    cb(null);
+                })
+                .catch((err) => {
+                    console.log("分类列表报错", res)
+                    cb(Constant.DEFAULT_ERROR)
+                });
+        }]
+    };
+    Common.autoFn(tasks, res, resObj);
 }
 const info = (req, res) => {
     const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
@@ -57,32 +99,37 @@ const info = (req, res) => {
     Common.autoFn(tasks, res, resObj);
 }
 const add = (req, res) => {
-    const  params = {
-        cate_name:JSON.stringify(req.body.name),
-        create_at:JSON.stringify(formatDate.checkDate()),
-        update_at:JSON.stringify(formatDate.checkDate())
+    const params = {
+        // id: 3,
+        name: req.body.name,
+        // update_at: new Date().getTime(),
+        // create_at: new Date().getTime()
+    };
+    const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
+    let tasks = {
+        checkParams: (cb) => {
+            Common.checkParams(params, ['name'], cb);
+        },
+        add: ['checkParams', (results, cb) => {
+            CateModel
+                .create({
+                    // id: 3,
+                    name: req.body.name,
+                    // update_at: new Date().getTime(),
+                    // create_at: new Date().getTime()
+                })
+                .then(result => {
+                    console.log('插入分类的处理结果', result);
+                    cb(null);
+                })
+                .catch(err => {
+                    console.log(err);
+                    cb(Constant.DEFAULT_ERROR);
+                })
+        }]
     }
-    const sql = `insert into cate(cate_name,create_at,update_at) values(${params.cate_name},${params.create_at},${params.update_at})`;
-    const  querySql = `select * from cate where cate_name=${params.cate_name}`
-    pool.query(querySql, (err, result) => {
-        if (err) {
-            console.log(err)
-            res.send(Constant.DEFAULT_ADD_CATE_FAIL);
-            return;
-        }
-        if(result && result.length === 0) {
-            pool.query(sql,(err, result)=>{
-                if (err) {
-                    console.log(err)
-                    res.send(Constant.DEFAULT_ADD_CATE_FAIL);
-                    return;
-                }
-                res.send(Common.clone(Constant.DEFAULT_SUCCESS));
-            })
-        }else{
-            res.send(Constant.DEFAULT_CATE_FAIL_REPEAT)
-        }
-    })
+
+    Common.autoFn(tasks, res, resObj)
 }
 const update = (req, res) => {
     const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
