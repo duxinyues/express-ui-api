@@ -2,7 +2,7 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-08-08 17:41:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-18 23:35:28
+ * @LastEditTime: 2021-11-20 12:45:29
  * @Description: app
  */
 var createError = require('http-errors');
@@ -39,12 +39,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/cate', cateRouter);
-app.use('/atricle', verifyMiddleware.verifyToken, atricleRoute);
+// app.use('/atricle', verifyMiddleware.verifyToken, atricleRoute);
+app.use('/atricle', atricleRoute);
 app.use('/admin', verifyMiddleware.verifyToken, adminRouter);
 app.use('/info', verifyMiddleware.verifyToken, infoRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  console.log(req)
   next(createError(404));
 });
 

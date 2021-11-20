@@ -2,175 +2,123 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-11-14 03:36:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-15 00:51:07
+ * @LastEditTime: 2021-11-20 13:04:36
  * @Description: 文件描述
  */
 const Common = require('./common');
-const ArticleMOdel = require('../models/article');
-const CateModel = require('../models/cate');
 const Constant = require("../constant/constant");
-const dateFormat = require('dateformat');
-
-let list = (res, req) => {
+const pool = require('../config');
+const formatDate = require("../utils")
+let list = (req, res) => {
+    const sql = `SELECT * FROM article LIMIT ${(req.body.page - 1) * req.body.pageSize},${req.body.pageSize}`
     const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
-    let tasks = {
-        checkParams: (cb) => { Common.checkParams(req.body, ['page', 'rows'], cb) },
-        query: ['checkParams', (res, cb) => {
-            let offset = req.body.rows * (req.body.page - 1) || 0;
-            let limit = parseInt(req.query.rows) || 20;
-            let whereCondition = {}; // 查询条件
-            if (req.body.title) {
-                whereCondition.title = req.body.title;
-            }
-
-            ArticleMOdel
-                .findAndCountAll({
-                    where: whereCondition,
-                    offset: offset,
-                    limit: limit,
-                    order: [['create_at', 'DESC']],
-                    include: [{
-                        model: CateModel
-                    }]
-                })
-                .then((result) => {
-                    let list = [];
-                    result.rows.forEach((value, index) => {
-                        let obj = {
-                            id: value.id,
-                            title: value.title,
-                            desc: value.desc.substr(0, 20) + '...',
-                            cate: value.cate,
-                            cateName: value.Cate.name,
-                            content: value.content,
-                            createAt: dateFormat(value.createAt, 'yyyy-mm-dd HH:MM:ss')
-                        };
-                        list.push(obj)
-                    });
-                    resObj.data = {
-                        list,
-                        count: result.count
-                    };
-                    cb(null);
-                })
-                .catch((err) => {
-                    cb(Constant.DEFAULT_ERROR)
-                })
-        }]
-    };
-    Common.autoFn(tasks, res, resObj);
+    pool.query(sql, (err, result) => {
+        if (err) {
+            res.send(Constant.DEFAULT_LOGIN_FAIL);
+            return;
+        }
+        if (result) {
+            resObj.data = result
+            res.send(resObj);
+        }
+    })
 };
-let info = (res, req) => {
-    const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
-    let tasks = {
-        checkParams: (cb) => { Common.checkParams(req.params, ['id'], cb) },
-        query: ['checkParams', (results, cb) => {
-            ArticleMOdel
-                .findByPk(req.params.id, {
-                    include: [{
-                        model: CateModel
-                    }]
-                })
-                .then((res) => {
-                    if (res) {
-                        res.data = {
-                            id: res.id,
-                            name: res.name,
-                            desc: res.desc,
-                            content: res.content,
-                            cate: res.cate,
-                            cateName: res.Cate.name,
-                            createAt: dateFormat(res.createAt, 'yyyy-mm-dd HH:MM:ss')
-                        };
-                        cb(null);
-                    } else {
-                        cb('article not exsit');
-                    }
-                })
-                .catch(err => {
-                    cb(Constant.DEFAULT_ERROR);
-                })
-        }]
-    };
-
-    Common.autoFn(tasks, res, resObj);
+let info = (req, res) => {
+    const params = { id: JSON.stringify(req.body.id) }
+    const sql = `SELECT * FROM article  WHERE id=${params.id}`;
+    const resObj = Common.clone(Constant.DEFAULT_SUCCESS)
+    pool.query(sql, (err, result) => {
+        if (err) {
+            console.log("什么", err);
+            res.send(Constant.DEFAULT_ERROR);
+        }
+        if (result && result.length>0) {
+            resObj.data = { ...result[0] }
+            res.send(resObj);
+            return;
+        }
+        
+    })
 };
-let add = (res, req) => {
-    const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
-    let task = {
-        checkParams: (cb) => { Common.checkParams(req.body, ['title', 'cate', 'desc', 'content'], cb); },
-        add: ['checkParams', (results, cb) => {
-            ArticleMOdel
-                .create({
-                    title: req.body.title,
-                    desc: req.body.desc,
-                    content: req.body.content,
-                    cate: req.body.cate,
-                })
-                .then(() => {
-                    cb(null)
-                })
-                .catch(err => {
-                    cb(COnstant.DEFAULT_ERROR)
-                });
-        }]
-    };
-    Common.autoFn(task, res, resObj)
-};
-let update = (res, req) => {
-    const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
-    let tasks = {
-        checkParams: (cb) => { Common.checkParams(req.body, ['id', 'title', 'cate', 'desc', 'content'], cb); },
-        update: ['checkParams', (results, cb) => {
-            ArticleMOdel
-                .update({
-                    title: req.body.title,
-                    desc: req.body.desc,
-                    content: req.body.content,
-                    cate: req.body.cate,
-                }, {
-                    where: {
-                        id: req.body.id
-                    }
-                })
-                .then(res => {
-                    if (res[0]) {
-                        cb(null);
-                    } else {
-                        cb("article not  exsit");
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                    cb(Constant.DEFAULT_ERROR);
-                })
-        }]
+let add = (req, res) => {
+    const params = {
+        title: JSON.stringify(req.body.title),
+        desc: JSON.stringify(req.body.desc),
+        cate: JSON.stringify(req.body.cate),
+        content: JSON.stringify(req.body.content),
+        create_at: JSON.stringify(formatDate.checkDate()),
+        update_at: JSON.stringify(formatDate.checkDate())
     }
-    Common.autoFn(tasks, res, resObj);
-};
-let remove = (res, req) => {
-    const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
-    let tasks = {
-        checkParams: (cb) => { Common.checkParams(req.body, ['id'], cb) },
-        remove: ['checkParams', (results, cb) => {
-            ArticleMOdel
-            .destroy({
-                where: { id: req.body.id}
-            })
-            .then(res =>{
-                if(res){
-                    cb(null);
-                }else{
-                    cb('article not  exsit');
+    const sql = `insert into article(title,decs,cate,content,create_at,update_at) values(${params.title},${params.desc},${params.cate},${params.content},${params.create_at},${params.update_at})`;
+    const querySql = `SELECT * FROM article WHERE title=${params.title};`
+    pool.query(querySql, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.send(Constant.DEFAULT_ERROR);
+            return;
+        }
+        if (results && results.length === 0) {
+            pool.query(sql, (error, _res) => {
+                if (error) {
+                    console.log("发布报错：", error);
+                    res.send(Constant.DEFAULT_ERROR);
+                    return;
+                }
+                if (_res) {
+                    console.log(_res);
+                    const resObj = Common.clone(Constant.DEFAULT_SUCCESS);
+                    res.send(resObj)
                 }
             })
-            .catch(err=>{
-                console.log(err);
-                cb(Constant.DEFAULT_ERROR);
-            });
-         }]
-    };
-    Common.autoFn(tasks, res, resObj);
+            return;
+        }
+        res.send({
+            code: 400,
+            msg: "文章已经存在，请重新设置"
+        })
+    })
+};
+let update = (req, res) => {
+    const params = {
+        id: JSON.stringify(req.body.id),
+        title: JSON.stringify(req.body.title),
+        desc: JSON.stringify(req.body.desc),
+        cate: JSON.stringify(req.body.cate),
+        content: JSON.stringify(req.body.content),
+        update_at: JSON.stringify(formatDate.checkDate())
+    }
+    const sql = `UPDATE article SET title=${params.title} ,decs=${params.desc},content=${params.content},cate=${params.cate},update_at=${params.update_at} WHERE id=${params.id}`;
+
+    pool.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.send(Constant.DEFAULT_ERROR);
+        }
+        if (result) {
+            res.send({
+                code: 200,
+                msg: '文章修改成功！'
+            })
+        }
+    })
+};
+let remove = (req, res) => {
+    const sql = `DELETE FROM article  WHERE id=${req.body.id}`;
+    const deleteSql = `select * from article where id=${req.body.id}`;
+    pool.query(deleteSql, (err, result) => {
+        if (result && result.length >= 1) {
+            pool.query(sql, (err, result) => {
+                if (err) {
+                    console.log(err)
+                    res.send(Common.clone(Constant.DEFAULT_DELETE_FAIL));
+                    return;
+                }
+                res.send(Common.clone(Constant.DEFAULT_DELETE_SUCCESS))
+            })
+        } else {
+            res.send({ code: 400, msg: "文章不存在！" })
+        }
+    })
 };
 module.exports = {
     list,

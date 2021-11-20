@@ -2,14 +2,12 @@
  * @Author: yongyuan253015@gmail.com
  * @Date: 2021-11-14 03:06:31
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-19 22:41:14
+ * @LastEditTime: 2021-11-20 13:02:52
  * @Description: cateController
  */
 const formatDate = require("../utils")
 const Common = require("./common");
-const CateModel = require("../models/cate");
 const Constant = require("../constant/constant");
-const dateFormat = require('dateformat');
 const pool = require('../config');
 
 const list = (req, res) => {
@@ -20,7 +18,6 @@ const list = (req, res) => {
             res.send(Constant.DEFAULT_LOGIN_FAIL);
             return;
         }
-
         if (result) {
             resObj.data = result
             res.send(resObj);
