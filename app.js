@@ -2,7 +2,7 @@
  * @Author: duxinyues yongyuan253015@gmail.com
  * @Date: 2022-10-21 21:24:22
  * @LastEditors: duxinyues yongyuan253015@gmail.com
- * @LastEditTime: 2022-10-21 22:17:53
+ * @LastEditTime: 2022-10-22 21:29:52
  * @FilePath: \node-sever\app.js
  * @Description: 
  * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
@@ -12,10 +12,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-let cors = require("cors");
+var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var articleRouter = require('./routes/article');
+var userRouter = require('./routes/users');
 
 var app = express();
 
@@ -35,9 +36,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: "session_secret",
+  saveUninitialized: true, // 是否保存未初始化的session
+  resave: true, //是否保存session
+  cookie: {
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // session的有效期
+  }
+}))
 
 app.use('/', indexRouter);
 app.use('/article', articleRouter);
+app.use('/user',userRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
