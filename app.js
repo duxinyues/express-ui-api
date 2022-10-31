@@ -2,8 +2,8 @@
  * @Author: duxinyues yongyuan253015@gmail.com
  * @Date: 2022-10-21 21:24:22
  * @LastEditors: duxinyues yongyuan253015@gmail.com
- * @LastEditTime: 2022-10-22 21:29:52
- * @FilePath: \node-sever\app.js
+ * @LastEditTime: 2022-10-29 15:12:58
+ * @FilePath: \express-ui-api\app.js
  * @Description: 
  * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
  */
@@ -23,14 +23,23 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.all('*', (req, res, next) => {
-  // 允许跨域，*表示允许任意域名跨域
-  res.header('Access-Control-Allow-Origin', "*");
-  res.header('Access-Control-Allow-Headers', "content-type");
-  res.header('Access-Control-Allow-Methods', "DELETE,PUT,POST,GET,OPTTONS");
-  next()
+// app.all('*', (req, res, next) => {
+//   // 允许跨域，*表示允许任意域名跨域
+//   res.header('Access-Control-Allow-Origin', "*");
+//   res.header('Access-Control-Allow-Headers', "content-type");
+//   res.header('Access-Control-Allow-Methods', "DELETE,PUT,POST,GET,OPTTONS");
+//   next()
+// });
+app.all('*', function (req, res, next) {
+  // 设置可以接收请求的域名
+  res.header('Access-Control-Allow-Origin', '*');
+  // 是否可以携带cookie
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Methods', '*');
+  res.header('Content-Type', 'application/json;charset=utf-8');
+  next();
 });
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -47,7 +56,7 @@ app.use(session({
 
 app.use('/', indexRouter);
 app.use('/article', articleRouter);
-app.use('/user',userRouter)
+app.use('/user', userRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
