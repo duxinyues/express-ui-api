@@ -1,0 +1,35 @@
+<!--
+ * @Author: duxinyues yongyuan253015@gmail.com
+ * @Date: 2022-11-10 09:12:50
+ * @LastEditors: duxinyues yongyuan253015@gmail.com
+ * @LastEditTime: 2022-11-10 09:16:02
+ * @FilePath: \express-ui-api\index.html
+ * @Description: 
+ * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    dfbd
+
+    <script>
+        let ws = new WebSocket("ws://localhost:3000/");
+        ws.onopen = () => {
+            ws.send("hello")
+        }
+        ws.onmessage =(ev) => {
+            console.log("ev", ev)
+        }
+        
+    </script>
+</body>
+
+</html>
