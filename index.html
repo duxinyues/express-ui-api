@@ -2,7 +2,7 @@
  * @Author: duxinyues yongyuan253015@gmail.com
  * @Date: 2022-11-10 09:12:50
  * @LastEditors: duxinyues yongyuan253015@gmail.com
- * @LastEditTime: 2022-11-10 09:16:02
+ * @LastEditTime: 2022-11-11 16:21:00
  * @FilePath: \express-ui-api\index.html
  * @Description: 
  * Copyright (c) 2022 by duxinyues email: yongyuan253015@gmail.com, All Rights Reserved.
@@ -18,17 +18,21 @@
 </head>
 
 <body>
-    dfbd
+    <p id="mes"></p>
 
     <script>
-        let ws = new WebSocket("ws://localhost:3000/");
-        ws.onopen = () => {
-            ws.send("hello")
+        let pText = document.querySelector("p")
+        let ws = new WebSocket("ws://localhost:3000/", ['com.kaazing.echo']);
+        ws.onopen = (e) => {
+            console.log("WebSocket open", e);
+            setInterval(() => {
+                ws.send(new Date().getTime())
+            }, 2000)
         }
-        ws.onmessage =(ev) => {
-            console.log("ev", ev)
+        ws.onmessage = ({ data }) => {
+            pText.innerText = data;
         }
-        
+
     </script>
 </body>
 
