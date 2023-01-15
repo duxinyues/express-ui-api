@@ -42,7 +42,6 @@ let expiresIn = 60000; // 过期时间
  * @security JWT
  */
 const login = async (req: Request, res: Response) => {
-    console.log("登录",req)
   const { username, password } = req.body;
   let sql: string =
   `select * from users where username='${username}'`;
@@ -164,4 +163,56 @@ const register = async (req: Request, res: Response) => {
     }
   });
 };
-export { login, register };
+/**
+ * @typedef UpdateList
+ * @property {string} username.required - 用户名 - eg: admin
+ */
+
+/**
+ * @route PUT /updateList/{id}
+ * @summary 列表更新
+ * @param {UpdateList.model} point.body.required - 用户名
+ * @param {UpdateList.model} id.path.required - 用户id
+ * @group 用户管理相关
+ * @returns {object} 200
+ * @returns {Array.<UpdateList>} UpdateList
+ * @security JWT
+ */
+
+const updateList = async (req: Request, res: Response) => {
+  console.log("更新",req.body,req.params)
+  const { id } = req.params;
+  const { username } = req.body;
+  let payload = null;
+  try {
+    const authorizationHeader = req.get("Authorization") as string;
+    const accessToken = authorizationHeader.substr("Bearer ".length);
+    payload = jwt.verify(accessToken, secret.jwtSecret);
+  } catch (error) {
+    return res.status(401).end();
+  }
+  let modifySql: string = "UPDATE users SET username = ? WHERE id = ?";
+  let sql: string = "select * from users where id=" + id;
+  connection.query(sql, function (err, data) {
+    connection.query(sql, function (err) {
+      if (err) {
+        Logger.error(err);
+      } else {
+        let modifyParams: string[] = [username, id];
+        // 改
+        connection.query(modifySql, modifyParams, async function (err, result) {
+          if (err) {
+            Logger.error(err);
+          } else {
+            await res.json({
+              success: true,
+              data: { message: Message[7] },
+            });
+          }
+        });
+      }
+    });
+  });
+};
+
+export { login, register,updateList };
