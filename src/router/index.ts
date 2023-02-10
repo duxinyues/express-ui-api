@@ -1,4 +1,4 @@
-import { rename } from "node:fs";
+import { rename } from "fs";
 import secret from "../config";
 import * as mysql from "mysql2";
 import * as jwt from "jsonwebtoken";
