@@ -3,16 +3,6 @@
         {
             "name": "build.json",
             "script": "npm run start"
-        },
-        {
-            "name": "system",
-            "script": "src/server.ts",
-            "watch": true,
-            "ignore_watch": [
-                "node_modules",
-                "src",
-                "public"
-            ]
         }
     ]
 }

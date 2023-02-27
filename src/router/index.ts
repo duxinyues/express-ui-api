@@ -248,7 +248,7 @@ const searchPage = async (req: Request, res: Response) => {
     if (err) {
       Logger.error(err);
     } else {
-      await res.json({
+       res.json({
         success: true,
         data,
       });
