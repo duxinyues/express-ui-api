@@ -1,3 +1,12 @@
+/*
+ * @Author: duxinyues yongyuan253015@gmail.com
+ * @Date: 2023-02-17 20:37:30
+ * @LastEditors: duxinyues yongyuan253015@gmail.com
+ * @LastEditTime: 2023-02-27 23:15:42
+ * @FilePath: \api\src\server.ts
+ * @Description: 
+ * Copyright (c) 2023 by ${duxinyues} email: ${yongyuan253015@gmail.com}, All Rights Reserved.
+ */
 import app from "./app";
 import config from "./config";
 import { user } from "./models/mysql";

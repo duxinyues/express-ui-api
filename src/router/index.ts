@@ -18,29 +18,16 @@ function verifyToken(req, res) {
   try {
     let accessToken = req.get("Authorization") as string;
     if (accessToken.indexOf("Bearer") >= 0) {
-      accessToken = accessToken.replace("Bearer", "");
+      accessToken = accessToken.replace("Bearer ", "");
     }
     jwt.verify(accessToken, secret.jwtSecret);
+    console.log("验证", jwt.verify(accessToken, secret.jwtSecret));
   } catch (error) {
-    res.status(401).end();
-    return res.json({ code: 401, mes: "暂无权限" }).end();
+    console.log("验证错了");
+    res.json({ code: 401, mes: "暂无权限" }).end();
+    return;
   }
 }
-/**
- * @typedef Error
- * @property {string} code.required
- */
-
-/**
- * @typedef Response
- * @property {[integer]} code
- */
-
-/**
- * @typedef Login
- * @property {string} username.required - 用户名 - eg: admin
- * @property {string} password.required - 密码 - eg: admin123
- */
 
 /**
  * @route POST /login
@@ -240,25 +227,21 @@ const updateList = async (req: Request, res: Response) => {
  */
 
 const searchPage = async (req: Request, res: Response) => {
-  const { page, size } = req.body;
   verifyToken(req, res);
-  let sql: string =
-    "select * from users limit " + size + " offset " + size * (page - 1);
+  const { page, size }: any = req.query;
+  let sql: string = "select * from users limit " + size + " offset " + page;
   connection.query(sql, async function (err, data) {
+    console.log("data", data, err);
     if (err) {
       Logger.error(err);
     } else {
-       res.json({
+      res.json({
         success: true,
         data,
       });
     }
   });
 };
-/**
- * @typedef SearchVague
- * @property {string} username.required - 用户名  - eg: admin
- */
 
 /**
  * @route POST /searchVague
@@ -275,7 +258,6 @@ const searchPage = async (req: Request, res: Response) => {
  */
 
 const searchVague = async (req: Request, res: Response) => {
-  console.log("模糊查询", req.body);
   const { username } = req.body;
   verifyToken(req, res);
   if (username === "" || username === null)
@@ -300,6 +282,20 @@ const searchVague = async (req: Request, res: Response) => {
 };
 // 多文件上传
 const upload = async (req: any, res: Response) => {
+  console.log("req.files", req);
+  let accountId;
+  try {
+    let accessToken = req.get("Authorization") as string;
+    if (accessToken.indexOf("Bearer") >= 0) {
+      accessToken = accessToken.replace("Bearer ", "");
+    }
+    jwt.verify(accessToken, secret.jwtSecret);
+    accountId = jwt.verify(accessToken, secret.jwtSecret)["accountId"];
+    console.log("验证", jwt.verify(accessToken, secret.jwtSecret));
+  } catch (error) {
+    console.log("验证错了");
+    return res.json({ code: 401, mes: "暂无权限" }).end();
+  }
   // 文件存放地址
   const des_filesPath = "./public/uploads/";
   let filesLength: number = req.files.length;
@@ -309,10 +305,11 @@ const upload = async (req: any, res: Response) => {
     res.render("error", { mes: "文件不能为空" });
     return;
   }
+  console.log("req.files", req.files);
   req.files.forEach((element) => {
     rename(
       des_filesPath + element.filename,
-      des_filesPath + element.originalname,
+      des_filesPath + accountId+"_"+element.originalname,
       (err) => {
         if (err) {
           console.log("文件重名错误", err);
@@ -322,11 +319,9 @@ const upload = async (req: any, res: Response) => {
     filesInfo.mimetype = element.mimetype;
     filesInfo.originalname = element.originalname;
     filesInfo.size = element.size;
-    filesInfo.path = des_filesPath + element.originalname;
+    filesInfo.path = des_filesPath + accountId+"_"+element.originalname;
     result.push(filesInfo);
   });
-
-  console.log("结果", result);
   res.set({ "content-type": "application/json;charset=uft-8" });
   res.send({
     success: true,
