@@ -1,0 +1,1 @@
+import{B as e}from"./ExclamationCircleFilled-8c3dffcc.js";import{R as r}from"./index-a5adc592.js";import{u as s,j as t}from"./index-6b6aa884.js";import"./AntdIcon-d8c0518e.js";const p=()=>{const o=s();return t(r,{status:"500",title:"500",subTitle:"Sorry, something went wrong.",extra:t(e,{type:"primary",onClick:()=>{o("/home")},children:"Back Home"})})};export{p as default};

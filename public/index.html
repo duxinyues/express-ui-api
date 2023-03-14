@@ -1,59 +1,24 @@
-<!-- HTML for static distribution bundle build -->
+<!--
+ * @Author: duxinyues yongyuan253015@gmail.com
+ * @Date: 2023-02-25 19:56:14
+ * @LastEditors: duxinyues yongyuan253015@gmail.com
+ * @LastEditTime: 2023-02-28 20:42:44
+ * @FilePath: \vite-react\index.html
+ * @Description: 
+ * Copyright (c) 2023 by ${duxinyues} email: ${yongyuan253015@gmail.com}, All Rights Reserved.
+-->
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <title>Swagger UI</title>
-  <link rel="stylesheet" type="text/css" href="./swagger-ui.css">
-  <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
-  <style>
-    html {
-      box-sizing: border-box;
-      overflow: -moz-scrollbars-vertical;
-      overflow-y: scroll;
-    }
-
-    *,
-    *:before,
-    *:after {
-      box-sizing: inherit;
-    }
-
-    body {
-      margin: 0;
-      background: #fafafa;
-    }
-  </style>
-</head>
-
-<body>
-  <div id="swagger-ui"></div>
-
-  <script src="./swagger-ui-bundle.js" charset="UTF-8"> </script>
-  <script src="./swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
-  <script>
-    window.onload = function () {
-      // Begin Swagger UI call region
-      const ui = SwaggerUIBundle({
-        url: "http://localhost:8098/swagger.json",
-        dom_id: '#swagger-ui',
-        deepLinking: true,
-        presets: [
-          SwaggerUIBundle.presets.apis,
-          SwaggerUIStandalonePreset
-        ],
-        plugins: [
-          SwaggerUIBundle.plugins.DownloadUrl
-        ],
-        layout: "StandaloneLayout"
-      })
-      // End Swagger UI call region
-
-      window.ui = ui
-    }
-  </script>
-</body>
-
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite-React-Admin </title>
+    <script type="module" crossorigin src="/static/js/index-6b6aa884.js"></script>
+    <link rel="stylesheet" href="/static/css/index-62df94ad.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    
+  </body>
 </html>

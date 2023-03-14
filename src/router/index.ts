@@ -48,8 +48,8 @@ const login = async (req: Request, res: Response) => {
   connection.query(sql, async function (err, data: any) {
     if (data.length == 0) {
       await res.json({
-        success: false,
-        data: { message: Message[1] },
+        code:1,
+        message: Message[1]
       });
     } else {
       if (
@@ -64,9 +64,9 @@ const login = async (req: Request, res: Response) => {
         );
         if (username === "admin") {
           await res.json({
-            success: true,
+            code: 200,
+            message: Message[2],
             data: {
-              message: Message[2],
               username,
               // 这里模拟角色，根据自己需求修改
               roles: ["admin"],
@@ -78,9 +78,9 @@ const login = async (req: Request, res: Response) => {
           });
         } else {
           await res.json({
-            success: true,
+            code: 200,
+            message: Message[2],
             data: {
-              message: Message[2],
               username,
               // 这里模拟角色，根据自己需求修改
               roles: ["common"],
@@ -93,8 +93,8 @@ const login = async (req: Request, res: Response) => {
         }
       } else {
         await res.json({
-          success: false,
-          data: { message: Message[3] },
+          code:1,
+          message: Message[3],
         });
       }
     }
@@ -309,7 +309,7 @@ const upload = async (req: any, res: Response) => {
   req.files.forEach((element) => {
     rename(
       des_filesPath + element.filename,
-      des_filesPath + accountId+"_"+element.originalname,
+      des_filesPath + accountId + "_" + element.originalname,
       (err) => {
         if (err) {
           console.log("文件重名错误", err);
@@ -319,7 +319,7 @@ const upload = async (req: any, res: Response) => {
     filesInfo.mimetype = element.mimetype;
     filesInfo.originalname = element.originalname;
     filesInfo.size = element.size;
-    filesInfo.path = des_filesPath + accountId+"_"+element.originalname;
+    filesInfo.path = des_filesPath + accountId + "_" + element.originalname;
     result.push(filesInfo);
   });
   res.set({ "content-type": "application/json;charset=uft-8" });

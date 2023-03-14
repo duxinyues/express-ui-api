@@ -1,3 +1,12 @@
+/*
+ * @Author: duxinyues yongyuan253015@gmail.com
+ * @Date: 2023-02-17 20:37:49
+ * @LastEditors: duxinyues yongyuan253015@gmail.com
+ * @LastEditTime: 2023-03-14 21:48:00
+ * @FilePath: \api\src\app.ts
+ * @Description: 
+ * Copyright (c) 2023 by ${duxinyues} email: ${yongyuan253015@gmail.com}, All Rights Reserved.
+ */
 import * as express from "express";
 import * as expressWs from "express-ws";
 import * as bodyParser from "body-parser";
@@ -27,7 +36,7 @@ class App {
     // 设置跨域访问
     this.app.all("*", (req, res, next) => {
       res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "content-type");
+      res.header("Access-Control-Allow-Headers", "*");
       res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
       res.header("X-Powered-By", " 3.2.1");
       res.header("Content-Type", "application/json;charset=utf-8");
