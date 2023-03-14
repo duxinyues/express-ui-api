@@ -2,7 +2,7 @@
  * @Author: duxinyues yongyuan253015@gmail.com
  * @Date: 2023-02-17 20:37:30
  * @LastEditors: duxinyues yongyuan253015@gmail.com
- * @LastEditTime: 2023-02-27 23:15:42
+ * @LastEditTime: 2023-03-14 21:09:47
  * @FilePath: \api\src\server.ts
  * @Description: 
  * Copyright (c) 2023 by ${duxinyues} email: ${yongyuan253015@gmail.com}, All Rights Reserved.
@@ -50,7 +50,7 @@ app
   .listen(8098, () => {
     Logger.info(`
     ################################################
-    🛡️ 文档地址: http://47.108.65.133:8098/ 🛡️
+    🛡️ 文档地址: http://localhost:8098/ 🛡️
     ################################################
   `);
   })
