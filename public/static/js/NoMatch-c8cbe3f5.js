@@ -1,1 +1,0 @@
-import{R as r}from"./index-a5adc592.js";import{B as o}from"./ExclamationCircleFilled-8c3dffcc.js";import{j as t,L as e}from"./index-6b6aa884.js";import"./AntdIcon-d8c0518e.js";function m(){return t(r,{status:"warning",title:"Nothing to see here!",extra:t(o,{type:"primary",children:t(e,{to:"/",children:"返回"})},"console")})}export{m as default};

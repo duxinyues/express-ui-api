@@ -25,7 +25,9 @@ const expressSwagger = require("express-swagger-generator")(app);
 
 expressSwagger(config.options);
 queryTable(user);
-
+app.get("/", (req, res) => {
+  res.send(200);
+});
 app.post("/login", (req, res) => {
   login(req, res);
 });
