@@ -1,4 +1,4 @@
-import { rename } from "fs";
+import { rename, readdir, readdirSync } from "fs";
 import secret from "../config";
 import * as mysql from "mysql2";
 import * as jwt from "jsonwebtoken";
@@ -11,7 +11,7 @@ import { Request, Response } from "express";
 import { createMathExpr } from "svg-captcha";
 
 let path = require("path");
-
+const des_filesPath = "./public/uploads/"; // 静态文件的存放地址
 let generateVerify: number; // 保存验证
 let expiresIn = 60000; // 过期时间
 function verifyToken(req, res) {
@@ -46,10 +46,10 @@ const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   let sql: string = `select * from users where username='${username}'`;
   connection.query(sql, async function (err, data: any) {
-    console.log("data",data)
+    console.log("data", data)
     if (data.length == 0) {
       await res.json({
-        code:1,
+        code: 1,
         message: Message[1]
       });
     } else {
@@ -94,7 +94,7 @@ const login = async (req: Request, res: Response) => {
         }
       } else {
         await res.json({
-          code:1,
+          code: 1,
           message: Message[3],
         });
       }
@@ -133,7 +133,7 @@ const register = async (req: Request, res: Response) => {
   let sql: string = `select * from users where username='${username}'`;
 
   connection.query(sql, async (err, data: any) => {
-    console.log("查询结果",data)
+    console.log("查询结果", data)
     if (data.length > 0) {
       await res.json({
         success: false,
@@ -168,17 +168,6 @@ const register = async (req: Request, res: Response) => {
  * @property {string} username.required - 用户名 - eg: admin
  */
 
-/**
- * @route PUT /updateList/{id}
- * @summary 列表更新
- * @param {UpdateList.model} point.body.required - 用户名
- * @param {UpdateList.model} id.path.required - 用户id
- * @group 用户管理相关
- * @returns {object} 200
- * @returns {Array.<UpdateList>} UpdateList
- * @security JWT
- */
-
 const updateList = async (req: Request, res: Response) => {
   console.log("更新", req.body, req.params);
   const { id } = req.params;
@@ -211,20 +200,6 @@ const updateList = async (req: Request, res: Response) => {
  * @typedef SearchPage
  * @property {integer} page.required - 第几页 - eg: 1
  * @property {integer} size.required - 数据量（条）- eg: 5
- */
-
-/**
- * @route POST /searchPage
- * @param {SearchPage.model} point.body.required - the new point
- * @produces application/json application/xml
- * @consumes application/json application/xml
- * @summary 分页查询
- * @group 用户管理相关
- * @returns {Response.model} 200
- * @returns {Array.<SearchPage>} SearchPage
- * @headers {integer} 200.X-Rate-Limit
- * @headers {string} 200.X-Expires-After
- * @security JWT
  */
 
 const searchPage = async (req: Request, res: Response) => {
@@ -284,7 +259,7 @@ const searchVague = async (req: Request, res: Response) => {
 // 多文件上传
 const upload = async (req: any, res: Response) => {
   console.log("req.files", req);
-  let accountId;
+  let accountId = "default";
   // try {
   //   let accessToken = req.get("Authorization") as string;
   //   if (accessToken.indexOf("Bearer") >= 0) {
@@ -298,7 +273,7 @@ const upload = async (req: any, res: Response) => {
   //   return res.json({ code: 401, mes: "暂无权限" }).end();
   // }
   // 文件存放地址
-  const des_filesPath = "./public/uploads/";
+
   let filesLength: number = req.files.length;
   let result = [];
   let filesInfo: any = {};
@@ -330,4 +305,6 @@ const upload = async (req: any, res: Response) => {
     data: result,
   });
 };
+
+
 export { login, register, updateList, searchPage, searchVague, upload };

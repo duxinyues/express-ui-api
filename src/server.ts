@@ -21,6 +21,7 @@ import {
   searchVague,
   upload,
 } from "./router";
+import {download}  from "./router/download"
 const expressSwagger = require("express-swagger-generator")(app);
 
 expressSwagger(config.options);
@@ -48,15 +49,17 @@ const upload_tmp = multer({ dest: "./public/uploads" });
 app.post("/upload", upload_tmp.any(), (req, res) => {
   upload(req, res);
 });
-app
-  .listen(8098, () => {
-    Logger.info(`
+
+app.post("/review", upload_tmp.any(), (req, res) => {
+  download(req, res);
+});
+app.listen(8098, () => {
+  Logger.info(`
     ################################################
     🛡️ 文档地址: http://localhost:8098/ 🛡️
     ################################################
   `);
-  })
-  .on("error", (err) => {
-    Logger.error(err);
-    process.exit(1);
-  });
+}).on("error", (err) => {
+  Logger.error(err);
+  process.exit(1);
+});
