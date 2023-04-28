@@ -281,7 +281,6 @@ const upload = async (req: any, res: Response) => {
     res.render("error", { mes: "文件不能为空" });
     return;
   }
-  console.log("req.files", req.files);
   req.files.forEach((element) => {
     rename(
       des_filesPath + element.filename,

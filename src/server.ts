@@ -1,12 +1,3 @@
-/*
- * @Author: duxinyues yongyuan253015@gmail.com
- * @Date: 2023-02-17 20:37:30
- * @LastEditors: duxinyues yongyuan253015@gmail.com
- * @LastEditTime: 2023-03-14 21:09:47
- * @FilePath: \api\src\server.ts
- * @Description: 
- * Copyright (c) 2023 by ${duxinyues} email: ${yongyuan253015@gmail.com}, All Rights Reserved.
- */
 import app from "./app";
 import config from "./config";
 import { user } from "./models/mysql";
@@ -50,7 +41,7 @@ app.post("/upload", upload_tmp.any(), (req, res) => {
   upload(req, res);
 });
 
-app.post("/review", upload_tmp.any(), (req, res) => {
+app.post("/hsjry/easyflow/admin/imageView/reviewImage", upload_tmp.any(), (req, res) => {
   download(req, res);
 });
 app.listen(8098, () => {
