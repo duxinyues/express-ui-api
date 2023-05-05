@@ -12,7 +12,8 @@ import {
   searchVague,
   upload,
 } from "./router";
-import {download}  from "./router/download"
+import { download } from "./router/download";
+import { viewBytes } from "./router/bytes"
 const expressSwagger = require("express-swagger-generator")(app);
 
 expressSwagger(config.options);
@@ -41,8 +42,9 @@ app.post("/upload", upload_tmp.any(), (req, res) => {
   upload(req, res);
 });
 
-app.post("/hsjry/easyflow/admin/imageView/reviewImage", upload_tmp.any(), (req, res) => {
-  download(req, res);
+app.post("/imageView/reviewImage", upload_tmp.any(), (req, res) => {
+  res.header("Content-Type", "application/json;charset=utf-8")
+  viewBytes(req, res);
 });
 app.listen(8098, () => {
   Logger.info(`

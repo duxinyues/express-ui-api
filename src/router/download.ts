@@ -1,5 +1,7 @@
+/**
+ * 读取文件流
+ */
 import { createReadStream } from "fs";
-
 import { Request, Response } from "express";
 let path = require("path");
 
