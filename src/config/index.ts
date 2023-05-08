@@ -55,7 +55,7 @@ export default {
     charset: "utf8_general_ci",
     user: "root",
     // password: "Duxinyues2023!",
-    password: "123456",
+    password: "12345678",
   },
   mongodb: {},
   sqlite: {},
