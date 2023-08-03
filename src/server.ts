@@ -1,3 +1,12 @@
+/*
+ * @Author: duxinyues weiyy26445@yunrong.cn
+ * @Date: 2023-05-06 23:40:43
+ * @LastEditors: duxinyues weiyy26445@yunrong.cn
+ * @LastEditTime: 2023-08-03 23:06:52
+ * @FilePath: /node/src/server.ts
+ * @Description: 
+ * Copyright (c) 2023 by ${duxinyues} email: ${weiyy26445@yunrong.cn}, All Rights Reserved.
+ */
 import app from "./app";
 import config from "./config";
 import { user } from "./models/mysql";
@@ -14,10 +23,10 @@ import {
 } from "./router";
 import { download } from "./router/download";
 import { viewBytes } from "./router/bytes"
-const expressSwagger = require("express-swagger-generator")(app);
+// const expressSwagger = require("express-swagger-generator")(app);
 
-expressSwagger(config.options);
-queryTable(user);
+// expressSwagger(config.options);
+// queryTable(user);
 app.get("/", (req, res) => {
   res.send(200);
 });

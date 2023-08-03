@@ -4,7 +4,7 @@ import Logger from "../loaders/logger";
 
 /** user数据库 */
 let connection = mysql.createConnection(
-  Object.assign({ database: "blogs" }, mysqlConfig.mysql)
+  Object.assign({ database: "myDatabase" }, mysqlConfig.mysql)
 );
 
 connection.connect();

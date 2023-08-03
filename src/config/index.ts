@@ -1,3 +1,12 @@
+/*
+ * @Author: duxinyues weiyy26445@yunrong.cn
+ * @Date: 2023-05-06 23:40:43
+ * @LastEditors: duxinyues weiyy26445@yunrong.cn
+ * @LastEditTime: 2023-08-03 23:05:58
+ * @FilePath: /node/src/config/index.ts
+ * @Description: 
+ * Copyright (c) 2023 by ${duxinyues} email: ${weiyy26445@yunrong.cn}, All Rights Reserved.
+ */
 import * as dotenv from "dotenv";
 
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
@@ -54,7 +63,7 @@ export default {
     host: "localhost",
     charset: "utf8_general_ci",
     user: "root",
-    password: "12345678",
+    password: "1234567",
   },
   mongodb: {},
   sqlite: {},
