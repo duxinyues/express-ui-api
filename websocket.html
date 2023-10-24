@@ -1,0 +1,32 @@
+<!--
+ * @Author: weiyy26445 weiyy26445@yunrong.cn
+ * @Date: 2023-10-24 12:42:54
+ * @LastEditors: weiyy26445 weiyy26445@yunrong.cn
+ * @LastEditTime: 2023-10-24 12:43:58
+ * @FilePath: /node/websocket.html
+ * @Description: 
+ * Copyright (c) 2023 by ${weiyy26445} email: ${weiyy26445@yunrong.cn}, All Rights Reserved.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <script>
+    const ws = new WebSocket("ws://127.0.0.1:34421")
+    ws.onopen = () => {
+      ws.send("hello")
+    }
+    ws.onmessage = (ev) => {
+      console.log("ev", ev)
+    }
+  </script>
+</body>
+
+</html>
